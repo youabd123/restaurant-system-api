@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using RestaurantSystem.Application.Common.Interfaces;
+using RestaurantSystem.Infrastructure.Data;
+using RestaurantSystem.Infrastructure.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using RestaurantSystem.Infrastructure.Data;
 
 namespace RestaurantSystem.Infrastructure;
 
@@ -18,6 +20,7 @@ public static class DependencyInjection
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         return services;
     }
