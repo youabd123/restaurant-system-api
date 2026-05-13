@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using RestaurantSystem.Infrastructure.Data;
+using RestaurantSystem.Application;
+using RestaurantSystem.Infrastructure;
+
 
 namespace RestaurantSystem.API
 {
@@ -12,8 +13,9 @@ namespace RestaurantSystem.API
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddApplication();
+            builder.Services.AddInfrastructure(builder.Configuration);
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
