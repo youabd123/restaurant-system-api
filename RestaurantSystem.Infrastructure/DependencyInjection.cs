@@ -22,6 +22,8 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+
 
         return services;
     }
