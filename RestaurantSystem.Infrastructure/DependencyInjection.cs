@@ -4,11 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using RestaurantSystem.Application.Common.Interfaces;
 using RestaurantSystem.Infrastructure.Data;
 using RestaurantSystem.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantSystem.Infrastructure;
 
@@ -20,7 +15,10 @@ public static class DependencyInjection
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+        // Här kopplas dina repositories ihop
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 
         return services;
     }
