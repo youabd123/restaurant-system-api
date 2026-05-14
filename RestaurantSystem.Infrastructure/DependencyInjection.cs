@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 
         return services;
     }
