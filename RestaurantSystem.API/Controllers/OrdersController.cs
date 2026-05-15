@@ -20,7 +20,6 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var orders = await _mediator.Send(new GetOrdersQuery());
-
         return Ok(orders);
     }
 
@@ -48,6 +47,24 @@ public class OrdersController : ControllerBase
         }
 
         return CreatedAtAction(nameof(GetById), new { id = createdOrder.Id }, createdOrder);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, UpdateOrderCommand command)
+    {
+        if (id != command.Id)
+        {
+            return BadRequest("Route id and body id do not match.");
+        }
+
+        var updatedOrder = await _mediator.Send(command);
+
+        if (updatedOrder is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(updatedOrder);
     }
 
     [HttpDelete("{id:int}")]
