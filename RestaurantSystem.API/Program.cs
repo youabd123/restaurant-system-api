@@ -1,5 +1,8 @@
 using RestaurantSystem.Application;
 using RestaurantSystem.Infrastructure;
+using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
+
 
 
 namespace RestaurantSystem.API
@@ -22,6 +25,33 @@ namespace RestaurantSystem.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseExceptionHandler(exceptionHandlerApp =>
+            {
+                exceptionHandlerApp.Run(async context =>
+                {
+                    var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+                    if (exceptionHandlerFeature?.Error is ValidationException validationException)
+                    {
+                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        context.Response.ContentType = "application/json";
+
+                        var errors = validationException.Errors
+                            .GroupBy(error => error.PropertyName)
+                            .ToDictionary(
+                                group => group.Key,
+                                group => group.Select(error => error.ErrorMessage).ToArray());
+
+                        await context.Response.WriteAsJsonAsync(new { errors });
+                        return;
+                    }
+
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
+                });
+            });
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
