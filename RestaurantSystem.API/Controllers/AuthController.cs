@@ -1,31 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RestaurantSystem.Infrastructure.Repositories;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using RestaurantSystem.Application.Features.Auth.Commands;
 
-namespace RestaurantSystem.API.Controllers
+namespace RestaurantSystem.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public AuthController(IMediator mediator)
     {
-        private readonly AuthService _auth;
+        _mediator = mediator;
+    }
 
-        public AuthController(AuthService auth)
-        {
-            _auth = auth;
-        }
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(string username, string password)
-        {
-            var ok = await _auth.Register(username, password);
-            return ok ? Ok("User created") : BadRequest("User already exists");
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
-        {
-            var ok = await _auth.Login(username, password);
-            return ok ? Ok("Login successful") : BadRequest("Invalid credentials");
-        }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 }
