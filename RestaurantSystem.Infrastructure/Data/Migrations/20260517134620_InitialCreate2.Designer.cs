@@ -12,8 +12,8 @@ using RestaurantSystem.Infrastructure.Data;
 namespace RestaurantSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260512222419_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260517134620_InitialCreate2")]
+    partial class InitialCreate2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,38 @@ namespace RestaurantSystem.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Klassiska stenugnsbakade pizzor",
+                            Name = "Pizzor"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Färsk pasta med italienska råvaror",
+                            Name = "Pasta"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Smått och gott att dela på",
+                            Name = "Förrätter"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Söta avslutningar",
+                            Name = "Efterrätter"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Kalla drycker och läsk",
+                            Name = "Dryck"
+                        });
                 });
 
             modelBuilder.Entity("RestaurantSystem.Domain.Entities.MenuItem", b =>
@@ -75,6 +107,71 @@ namespace RestaurantSystem.Infrastructure.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("MenuItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "Tomatsås, ost och basilika",
+                            IsAvailable = true,
+                            Name = "Margherita",
+                            Price = 95.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            Description = "Tomatsås, ost och skinka",
+                            IsAvailable = true,
+                            Name = "Vesuvio",
+                            Price = 105.00m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            Description = "Klassisk krämig sås med pancetta",
+                            IsAvailable = true,
+                            Name = "Carbonara",
+                            Price = 135.00m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 3,
+                            Description = "Serveras med aioli",
+                            IsAvailable = true,
+                            Name = "Vitlöksbröd",
+                            Price = 45.00m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 4,
+                            Description = "Klassisk italiensk efterrätt",
+                            IsAvailable = true,
+                            Name = "Tiramisu",
+                            Price = 75.00m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 5,
+                            Description = "33cl",
+                            IsAvailable = true,
+                            Name = "Coca Cola",
+                            Price = 25.00m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 5,
+                            Description = "33cl",
+                            IsAvailable = true,
+                            Name = "Mineralvatten",
+                            Price = 20.00m
+                        });
                 });
 
             modelBuilder.Entity("RestaurantSystem.Domain.Entities.Order", b =>
@@ -133,6 +230,27 @@ namespace RestaurantSystem.Infrastructure.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("RestaurantSystem.Domain.Entities.MenuItem", b =>
