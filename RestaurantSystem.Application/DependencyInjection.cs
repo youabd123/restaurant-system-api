@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using RestaurantSystem.Application.Common.Behaviors;
+using RestaurantSystem.Application.Common.Mappings;
 
 namespace RestaurantSystem.Application;
 
@@ -16,6 +17,7 @@ public static class DependencyInjection
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+        services.AddAutoMapper(cfg => cfg.AddMaps(typeof(DependencyInjection).Assembly));
 
         return services;
     }
