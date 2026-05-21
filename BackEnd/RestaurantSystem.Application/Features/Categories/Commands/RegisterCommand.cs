@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using RestaurantSystem.Application.Common.Interfaces;
 using RestaurantSystem.Application.Features.Auth.DTOs;
 using RestaurantSystem.Domain.Entities;
 
@@ -10,10 +11,12 @@ public record RegisterCommand(string FullName, string Email, string Password) : 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthDto>
 {
     private readonly UserManager<AppUser> _userManager;
+    private readonly IJwtService _jwtService;
 
-    public RegisterCommandHandler(UserManager<AppUser> userManager)
+    public RegisterCommandHandler(UserManager<AppUser> userManager, IJwtService jwtService)
     {
         _userManager = userManager;
+        _jwtService = jwtService;
     }
 
     public async Task<AuthDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -35,11 +38,15 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthDto>
 
         await _userManager.AddToRoleAsync(user, "User");
 
+        var roles = await _userManager.GetRolesAsync(user);
+        var token = _jwtService.GenerateToken(user, roles);
+
         return new AuthDto
         {
+            Token = token,
             Email = user.Email!,
             FullName = user.FullName,
-            Roles = await _userManager.GetRolesAsync(user)
+            Roles = roles
         };
     }
 }
