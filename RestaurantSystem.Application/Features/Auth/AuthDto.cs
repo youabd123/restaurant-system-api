@@ -1,4 +1,4 @@
-﻿namespace RestaurantSystem.Application.Features.Auth.DTOs;
+﻿namespace RestaurantSystem.Application.Features.Auth;
 
 public class AuthDto
 {

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using RestaurantSystem.Application.Common.Interfaces;
-using RestaurantSystem.Application.Features.Auth.DTOs;
 using RestaurantSystem.Domain.Entities;
 
 namespace RestaurantSystem.Application.Features.Auth.Commands;
