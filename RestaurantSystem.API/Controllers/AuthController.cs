@@ -28,4 +28,12 @@ public class AuthController : ControllerBase
         var result = await _mediator.Send(command);
         return Ok(result);
     }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (!result) return BadRequest("Kunde inte återställa lösenordet.");
+        return Ok("Lösenordet har återställts.");
+    }
 }
