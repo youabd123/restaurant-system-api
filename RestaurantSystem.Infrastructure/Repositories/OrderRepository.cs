@@ -28,4 +28,14 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
                 .ThenInclude(orderItem => orderItem.MenuItem)
             .FirstOrDefaultAsync(order => order.Id == id);
     }
+
+    public async Task<List<Order>> GetByEmailAsync(string email)
+    {
+        return await _context.Orders
+            .Include(order => order.OrderItems)
+                .ThenInclude(orderItem => orderItem.MenuItem)
+            .Where(order => order.CustomerEmail == email)
+            .OrderByDescending(order => order.CreatedAt)
+            .ToListAsync();
+    }
 }

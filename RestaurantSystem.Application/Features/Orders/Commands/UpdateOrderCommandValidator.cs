@@ -7,6 +7,7 @@ public class UpdateOrderCommandValidator : AbstractValidator<UpdateOrderCommand>
     private static readonly string[] AllowedStatuses =
     {
         "Pending",
+        "Confirmed",
         "Completed",
         "Cancelled"
     };
