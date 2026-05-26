@@ -48,7 +48,7 @@ namespace RestaurantSystem.API
             {
                 options.AddPolicy("AllowFrontend", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
+                    policy.WithOrigins("http://localhost:5174")
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
@@ -96,8 +96,8 @@ namespace RestaurantSystem.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
             app.UseCors("AllowFrontend");
+            // app.UseHttpsRedirection();  
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
